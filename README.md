@@ -1,6 +1,10 @@
 # Collection of Open Toolchain utilities
 
-## Pipeline Duplication
+## Template extraction for an existing toolchain
+The toolchain-to-template script takes a Toolchain URL and will generate an OTC Template in the current folder that when run creates a clone of you original toolchain.
+See https://github.com/open-toolchain/toolchain-to-template
+
+## Classic Pipeline Duplication
 The `duplicate_pipeline.sh` script allows to duplicate an existing pipeline _classic_ flavor in the toolchain.
 
 ### Setup
