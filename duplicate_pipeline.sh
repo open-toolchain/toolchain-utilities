@@ -6,9 +6,9 @@
 # You must be logged-in to the account, resource group and region that the toolchain/pipelines you want to duplicate from/to
 # are hosted
 
-BEARER_TOKEN=$(ibmcloud iam oauth-tokens | sed 's/^IAM token:[ ]*//')
+BEARER_TOKEN=$(ibmcloud iam oauth-tokens --output JSON | jq -r '.iam_token')
 
-REGION=$(ibmcloud target | grep -i region: | awk '{print $2};')
+REGION=$(ibmcloud target --output JSON | jq -r '.region.name')
 
 OTC_API_SERVICE_INSTANCES_URL="https://devops-api.$REGION.devops.cloud.ibm.com/v1/service_instances"
 
