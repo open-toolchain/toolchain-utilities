@@ -56,7 +56,7 @@ Create Docker action container using IBM Cloud Functions/OpenWhisk to start a De
    ```
 
    Alternative/Known issue:
-   - As described here: # https://cloud.ibm.com/docs/openwhisk?topic=cloud-functions-namespaces#service-id-set-ui, giving Resource group and Toolchain access to IBM Cloud function service ID corresponding to the used namespace should be a way to provide a valid apikey to the underlying `ibmcloud login`.
+   - As described in https://cloud.ibm.com/docs/openwhisk?topic=cloud-functions-namespaces#service-id-set-ui, giving Resource group and Toolchain access to IBM Cloud function service ID corresponding to the used namespace should be a way to provide a valid apikey to the underlying `ibmcloud login`.
 
      Unfortunately, there is a problem while using `ibmcloud dev pipeline-run` within this context
 
