@@ -67,13 +67,19 @@ See https://cloud.ibm.com/docs/openwhisk?topic=cloud-functions-pkg_alarms
 In the remaining section, we will define a trigger that will start a run of the configured pipeline every 2 minutes
 1) Define the time trigger
     ```
-    ibmcloud fn trigger create pipeline-run-every-minute \
+    ibmcloud fn trigger create pipeline-run-every-2-minutes \
     --feed /whisk.system/alarms/interval \
+    --param minutes 2
+    ```
+Note: if using Git bash on Windows, use this command to define the trigger:
+    ```
+    ibmcloud fn trigger create pipeline-run-every-2-minutes \
+    --feed '//whisk.system\alarms\interval' \
     --param minutes 2
     ```
 2) Create the rule that associate the trigger to the function
    ```
-   ibmcloud fn rule create pipeline-run-rule pipeline-run-every-minute pipeline-run
+   ibmcloud fn rule create pipeline-run-rule pipeline-run-every-2-minutes pipeline-run
    ```
 3) Optionnaly, you can monitor the activity by polling for the activation logs
    ```
