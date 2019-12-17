@@ -13,6 +13,9 @@ STAGE_ID=$(echo $1 | jq -r '.stage_id // empty')
 # https://cloud.ibm.com/docs/openwhisk?topic=cloud-functions-namespaces#namespace-access
 API_KEY=${IBM_CLOUD_API_KEY:-$__OW_IAM_NAMESPACE_API_KEY}
 
+# Prevent CLI version update check
+ibmcloud config --check-version=false
+
 if ibmcloud login --apikey "$API_KEY" -g "$RESOURCE_GROUP" -r "$REGION"; then
   if [ -z "$STAGE_ID" ]; then
     MESSAGE="Run for pipeline $PIPELINE_ID invoked"
