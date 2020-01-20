@@ -13,8 +13,10 @@ Collection of scripts to customize Delivery Pipeline Private Worker installation
 ## Procedure to install private worker with images pulled from a private registry
 
 1) Configure your docker client to be connected to your target private image registry.
-   To target IBM Cloud Container registry, use `ibmcloud cr login`
+
    To target your IBM Cloud Private image registry, TBD
+
+   To target IBM Cloud Container registry, use `ibmcloud cr login`
 
 2) Set the environment variables to configure:
    - the region by set `region` environment variable (default to `us-south`). This is the region that your private worker will pull workload from
@@ -25,8 +27,20 @@ Collection of scripts to customize Delivery Pipeline Private Worker installation
    Note: Alternative is to download it while source it using a cURL invocation
   `source <(curl -sSL "https://raw.githubusercontent.com/open-toolchain/toolchain-utilities/master/private-worker-using-private-registry-image/provision_private_worker_images.sh")` 
 
-4) (Optional) For an IBM Cloud Private image registry target, change the scope of the newly pushed imaged
+4) Configure images availabilty
+
+   For an IBM Cloud Private image registry target, change the scope of the newly pushed imaged
    This can be done using the script `change_images_scope.sh`
+
+   For an IBM Cloud Container Registry, ensure that the service accounts `tekton-pipelines-controller` and `private-worker-agent` in `tekton-pipelines` namespace have access to the image pull secrets to target the container registry:
+   - Follow https://cloud.ibm.com/docs/containers?topic=containers-images#copy_imagePullSecret to copy the secrets to tekton-pipelines namespace.
+   - Read https://cloud.ibm.com/docs/containers?topic=containers-images#store_imagePullSecret to understand the configuration required for service accounts to use the newly created image pull secrets.
+   - Update `updated-private-worker-install.yaml` to add an imagePullSecrets entry for each of the service accounts.
+     Typically, you will add an entry like:
+     ```
+     imagePullSecrets:
+     - name: tekton-pipelines-us-icr-io
+     ```
 
 5) Locate the last line of the command output to install the customized private worker
    ```
