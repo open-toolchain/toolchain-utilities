@@ -6,7 +6,10 @@ dockerio_mapping_prefix=${dockerio_mapping_prefix:-""}
 
 curl -o $install_filename  https://private-worker-service.$region.devops.cloud.ibm.com/install
 
-cat $install_filename | grep -e 'gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd' -e 'image:'  \
+# Use yq to lint yaml and prevent continuous string definition for 'image:'' such as
+#         image: >-
+#          gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/webhook@sha256:7215a25a58c074bbe30a50db93e6a47d2eb5672f9af7570a4e4ab75e50329131
+yq read --doc '*' $install_filename | grep -e 'gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd' -e 'image:'  \
   | sed 's/- gcr.io/gcr.io/g' \
   | sed 's/- image: gcr.io/gcr.io/g' \
   | sed 's/image: gcr.io/gcr.io/g' \
@@ -33,5 +36,5 @@ done
 echo "*****"
 echo "Provisioning of docker images to $target_cr done."
 echo "Update of the install file $install_filename done"
-echo "Change the scope of the images to global before"
-echo "running \"kubectl apply --filename $install_filename\" to install the delivery pipeline private worker"
+echo "If target is IBM Cloud Private, change the scope of the images to global - https://www.ibm.com/support/knowledgecenter/en/SSBS6K_3.2.0/manage_images/change_scope.html"
+echo "Run the following command \"kubectl apply --filename $install_filename\" to install the delivery pipeline private worker"

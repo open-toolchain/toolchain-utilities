@@ -7,5 +7,42 @@ Collection of scripts to customize Delivery Pipeline Private Worker installation
 - `provision_pipeline_base_images.sh`script is used to facilitate IBM pipeline base images push to a target private registry. Such images can then be referenced in classic pipeline job(s) execution or tekton pipeline task
 
 ## Pre-requisites
-- The scripts require that the following utilities are pre-installed on your PATH: `ibmcloud`, `curl`, `docker` 
-  See https://cloud.ibm.com/docs/cli?topic=cloud-cli-install-ibmcloud-cli
+- The scripts require that the following utilities are pre-installed on your PATH: `ibmcloud`, `curl`, `docker` (see https://cloud.ibm.com/docs/cli?topic=cloud-cli-install-ibmcloud-cli) and `yq` (https://github.com/mikefarah/yq)
+- Ensure that the namespaces `tekton-releases` and `ibmcom` are created in the target image registry
+
+## Procedure to install private worker with images pulled from a private registry
+
+1) Configure your docker client to be connected to your target private image registry.
+   To target IBM Cloud Container registry, use `ibmcloud cr login`
+   To target your IBM Cloud Private image registry, TBD
+
+2) Set the environment variables to configure:
+   - the region by set `region` environment variable (default to `us-south`). This is the region that your private worker will pull workload from
+   - the target registry by set `target_cr` environment variable (default to `mycluster168.icp:8500` - which is the default for the IBM Cloud Private image registry)
+   - (optional) the prefix that will be used to as a prefix to tag images pulled from docker hub (typically the `ibmcom` namespace one). To configure this, set `dockerio_mapping_prefix` environment variable
+
+3) Download or copy `provision_private_worker_images.sh` to your work folder and then execute it.
+   Note: Alternative is to download it while source it using a cURL invocation
+  `source <(curl -sSL "https://raw.githubusercontent.com/open-toolchain/toolchain-utilities/master/private-worker-using-private-registry-image/provision_private_worker_images.sh")` 
+
+4) (Optional) For an IBM Cloud Private image registry target, change the scope of the newly pushed imaged
+   This can be done using the script `change_images_scope.sh`
+
+5) Locate the last line of the command output to install the customized private worker
+   ```
+   Run the following command "kubectl apply --filename updated-private-worker-install.yaml" to install the delivery pipeline private worker
+   ```
+
+## Procedure to push pipeline-base-image images to a private registry
+
+1) Configure your docker client to be connected to your target private image registry.
+   To target IBM Cloud Container registry, use `ibmcloud cr login`
+   To target your IBM Cloud Private image registry, TBD
+
+2) Set the environment variables to configure:
+   - the target registry by set `target_cr` environment variable (default to `mycluster168.icp:8500` - which is the default for the IBM Cloud Private image registry)
+   - (optional) the prefix that will be used to as a prefix to tag images pulled from docker hub (typically the `ibmcom` namespace one). To configure this, set `dockerio_mapping_prefix` environment variable
+
+3) Download or copy `provision_pipeline_base_images.sh` to your work folder and then execute it.
+   Note: Alternative is to download it while source it using a cURL invocation
+  `source <(curl -sSL "https://raw.githubusercontent.com/open-toolchain/toolchain-utilities/master/private-worker-using-private-registry-image/provision_pipeline_base_images.sh")`
