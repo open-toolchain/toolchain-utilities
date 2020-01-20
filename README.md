@@ -12,6 +12,6 @@ The [README _Cloud Function Action for Classic Pipeline_](time-trigger-pipeline/
 See `time-trigger-pipeline` subdirectory.
 Note: this is only relevant for  _classic_ pipelines as tekton _pipelines_ have built-in support for timed-trigger. See [Configuring a Delivery Pipeline for Tekton](https://cloud.ibm.com/docs/services/ContinuousDelivery?topic=ContinuousDelivery-tekton-pipelines#configure_tekton_pipeline)
 
-## Delivery Pipeline Private Worker using Private Registry image(s)
-The [README _Private Worker using Private Registry Image(s)_](private-worker-using-private-registry-image/README.md) describes how to install a Delivery Pipeline private worker using image(s) pulled from a Private registry.
+## Delivery Pipeline Private Worker customized installation
+The [README _Private Worker using Private Registry Image(s)_](private-worker-using-private-registry-image/README.md) describes how to perform a customized installation of a Delivery Pipeline private worker using image(s) pulled from a Private registry.
 The directory `private-worker-using-private-registry-image` contains script(s) referenced in the IBM Cloud documentation [Updating the Delivery Pipeline Private Worker installation](https://cloud.ibm.com/docs/services/ContinuousDelivery?topic=ContinuousDelivery-install-private-workers#provisioning-and-updating-the-private-worker-installation-file-for-ibm-cloud-private)
