@@ -1,9 +1,9 @@
-Cloud Function Action for Delivery Pipeline run
+Cloud Function Action and Time Trigger execution for _Classic_ Delivery Pipeline
 ================
 
 Create Docker action container using IBM Cloud Functions/OpenWhisk to start a Delivery Pipeline run.
 
-### Setup
+## Setup
 
 1) Build and push the docker image containing the `pipeline-run.sh` script as `action/exec`
 
