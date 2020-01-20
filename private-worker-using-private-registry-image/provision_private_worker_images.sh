@@ -9,7 +9,7 @@ curl -o $install_filename  https://private-worker-service.$region.devops.cloud.i
 # Use yq to lint yaml and prevent continuous string definition for 'image:'' such as
 #         image: >-
 #          gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/webhook@sha256:7215a25a58c074bbe30a50db93e6a47d2eb5672f9af7570a4e4ab75e50329131
-yq read --doc '*' $install_filename | grep -e 'gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd' -e 'image:'  \
+yq read --doc '*' $install_filename | grep -e 'gcr.io/tekton-releases/github.com/tektoncd/pipeline' -e 'image:'  \
   | sed 's/- gcr.io/gcr.io/g' \
   | sed 's/- image: gcr.io/gcr.io/g' \
   | sed 's/image: gcr.io/gcr.io/g' \
