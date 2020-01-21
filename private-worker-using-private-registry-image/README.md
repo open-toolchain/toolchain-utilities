@@ -15,7 +15,8 @@ Collection of scripts to customize Delivery Pipeline Private Worker installation
 1) Configure your docker client to be connected to your target private image registry.
 
    To target your IBM Cloud Private image registry, follow https://www.ibm.com/support/knowledgecenter/en/SSBS6K_3.2.0/manage_images/configuring_docker_cli.html
-   Note: To retrieve the certificates defined during/for the IBM Cloud Private installation, you can use the kubernetes secrets definition in the ICP - See https://www.ibm.com/support/knowledgecenter/SSBS6K_3.2.0/installing/create_cert.html
+   
+   __Note:__ To retrieve the certificates defined during/for the IBM Cloud Private installation, you can use the kubernetes secrets definition in the ICP - See https://www.ibm.com/support/knowledgecenter/SSBS6K_3.2.0/installing/create_cert.html
    Typically, the CRT could be obtained by decoding the K8S secret
    ```
    kubectl get secret -n kube-public ibmcloud-cluster-ca-cert -o jsonpath='{.data.ca\.crt}' | base64 --decode
@@ -29,14 +30,16 @@ Collection of scripts to customize Delivery Pipeline Private Worker installation
    - (optional) the prefix that will be used to as a prefix to tag images pulled from docker hub (typically the `ibmcom` namespace one). To configure this, set `dockerio_mapping_prefix` environment variable
 
 3) Download or copy `provision_private_worker_images.sh` to your work folder and then execute it.
-   Note: Alternative is to download it while source it using a cURL invocation
-  `source <(curl -sSL "https://raw.githubusercontent.com/open-toolchain/toolchain-utilities/master/private-worker-using-private-registry-image/provision_private_worker_images.sh")` 
+
+   __Note:__ Alternative is to download it while source it using a cURL invocation
+   `source <(curl -sSL "https://raw.githubusercontent.com/open-toolchain/toolchain-utilities/master/private-worker-using-private-registry-image/provision_private_worker_images.sh")` 
 
 4) Configure images availabilty
 
-   For an IBM Cloud Private image registry target, change the scope of the newly pushed imaged. 
+   For an IBM Cloud Private image registry target, change the scope of the newly pushed images. 
    Follow https://www.ibm.com/support/knowledgecenter/en/SSBS6K_3.2.0/manage_images/change_scope.html
-   Note: This can be done using the script `change_images_scope.sh`
+
+   __Note:__ This can be done using the script `change_images_scope.sh`
 
    ~~For an IBM Cloud Container Registry, ensure that the service accounts `tekton-pipelines-controller` and `private-worker-agent` in `tekton-pipelines` namespace have access to the image pull secrets to target the container registry:~~
    ~~- Follow https://cloud.ibm.com/docs/containers?topic=containers-images#copy_imagePullSecret to copy the secrets to tekton-pipelines namespace.~~
@@ -64,5 +67,6 @@ Collection of scripts to customize Delivery Pipeline Private Worker installation
    - (optional) the prefix that will be used to as a prefix to tag images pulled from docker hub (typically the `ibmcom` namespace one). To configure this, set `dockerio_mapping_prefix` environment variable
 
 3) Download or copy `provision_pipeline_base_images.sh` to your work folder and then execute it.
-   Note: Alternative is to download it while source it using a cURL invocation
-  `source <(curl -sSL "https://raw.githubusercontent.com/open-toolchain/toolchain-utilities/master/private-worker-using-private-registry-image/provision_pipeline_base_images.sh")`
+
+   __Note:__ Alternative is to download it while source it using a cURL invocation
+   `source <(curl -sSL "https://raw.githubusercontent.com/open-toolchain/toolchain-utilities/master/private-worker-using-private-registry-image/provision_pipeline_base_images.sh")`
