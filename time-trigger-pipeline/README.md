@@ -9,8 +9,9 @@ Create Docker action container using IBM Cloud Functions/OpenWhisk to start a De
 
    Reminder: IBM Cloud Function can only use image from public registries - https://cloud.ibm.com/docs/openwhisk?topic=cloud-functions-prep#prep_docker
    ```
-   docker build -t jauninb/pipeline-run-docker:1.0.0 .
-   docker push jauninb/pipeline-run-docker:1.0.0
+   docker build -t jauninb/pipeline-run-docker:1.0.1 -t jauninb/pipeline-run-docker:latest .
+   docker push jauninb/pipeline-run-docker:1.0.1
+   docker push jauninb/pipeline-run-docker:latest
    ```
    Note: you can reuse the image provided at https://hub.docker.com/repository/docker/jauninb/pipeline-run-docker
 

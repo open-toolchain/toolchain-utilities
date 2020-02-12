@@ -4,6 +4,8 @@ ENV FLASK_PROXY_PORT 8080
 
 LABEL maintainer="Benoit Jaunin <jaunin.b@fr.ibm.com>"
 
+RUN apk update && apk upgrade
+
 RUN apk --no-cache add jq curl
 
 RUN curl -fsSL https://clis.cloud.ibm.com/install/linux | sh
