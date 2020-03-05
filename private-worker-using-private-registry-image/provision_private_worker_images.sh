@@ -19,6 +19,8 @@ yq read --doc '*' $install_filename | grep -e 'gcr.io/tekton-releases/github.com
     echo "Processing $image"
     docker pull $image
     new_image_tag=$image
+    # if image tag was including a tag - keep the imagename and tag (not the shaid value)
+    new_image_tag=$(echo $new_image_tag | awk -F: '{print $1":"$2}')
     # if $image only have a single slash it is coming from dockerhub
     number_of_slashes=$(echo $image | tr -cd '/' | wc -c)
     if [ "$number_of_slashes" == "1" ]; then
