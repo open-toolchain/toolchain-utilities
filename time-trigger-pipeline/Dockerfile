@@ -8,13 +8,14 @@ RUN apk update && apk upgrade
 
 RUN apk --no-cache add jq curl
 
-RUN curl -fsSL https://clis.cloud.ibm.com/install/linux | sh
-
 WORKDIR /root
 
 ENV HOME /root
 
-RUN ibmcloud plugin install dev
+RUN curl -fsSL https://clis.cloud.ibm.com/install/linux | sh
+
+#dev plugin is already installed
+#RUN ibmcloud plugin install dev
 
 WORKDIR /
 
