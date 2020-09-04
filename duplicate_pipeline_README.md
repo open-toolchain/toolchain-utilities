@@ -51,6 +51,8 @@ The `duplicate_pipeline.sh` script allows to duplicate an existing pipeline _cla
 
 The script will create a new pipeline with name being "<SOURCE PIPELINE NAME>-copy" in the toolchain.
 
+Note:  If the name of the source toolchain contains spaces, the script will replace the spaces with '_' in the name of the new pipeline.  
+
 The tail of the script execution logs indicates the pipeline secured properties or stage(s) secured properties that needs to be set manually in the new pipeline
 
 ## Known limitations
