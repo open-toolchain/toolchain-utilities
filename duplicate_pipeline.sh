@@ -14,6 +14,11 @@ OTC_API_SERVICE_INSTANCES_URL="https://devops-api.$REGION.devops.cloud.ibm.com/v
 
 PIPELINE_API_URL="https://devops-api.$REGION.devops.cloud.ibm.com/v1/pipeline"
 
+if [ -f ".env" ]; then
+  SOURCE_PIPELINE_ID=`cat .env | grep SOURCE_PIPELINE_ID | awk -F'"' '{print $2}'`
+  TOOLCHAIN_ID=`cat .env | grep TOOLCHAIN_ID | awk -F'"' '{print $2}'`
+fi
+
 if [ -z "$SOURCE_PIPELINE_ID" ]; then
   echo "Source pipeline not defined"
   exit 1
