@@ -45,10 +45,13 @@ The `duplicate_pipeline.sh` script allows to duplicate an existing pipeline _cla
    TOOLCHAIN_ID=86431b6c-54bf-43d2-88d9-ae31460c11f6
    SOURCE_PIPELINE_ID=50ed4b37-7b22-4fe6-b0f3-2de8a12e87a2
    ```
-
+   * The script can also read from a .env file to reference the variables.  Copy and rename the .env.sample to .env and insert the values.
+   
 3) In a shell, run the following: `source ./duplicate_pipeline.sh` or `source <(curl -sSL "https://raw.githubusercontent.com/open-toolchain/toolchain-utilities/master/duplicate_pipeline.sh")`
 
 The script will create a new pipeline with name being "<SOURCE PIPELINE NAME>-copy" in the toolchain.
+
+Note:  If the name of the source toolchain contains spaces, the script will replace the spaces with '_' in the name of the new pipeline.  
 
 The tail of the script execution logs indicates the pipeline secured properties or stage(s) secured properties that needs to be set manually in the new pipeline
 

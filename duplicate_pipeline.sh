@@ -14,6 +14,11 @@ OTC_API_SERVICE_INSTANCES_URL="https://devops-api.$REGION.devops.cloud.ibm.com/v
 
 PIPELINE_API_URL="https://devops-api.$REGION.devops.cloud.ibm.com/v1/pipeline"
 
+if [ -f ".env" ]; then
+  SOURCE_PIPELINE_ID=`cat .env | grep SOURCE_PIPELINE_ID | awk -F'"' '{print $2}'`
+  TOOLCHAIN_ID=`cat .env | grep TOOLCHAIN_ID | awk -F'"' '{print $2}'`
+fi
+
 if [ -z "$SOURCE_PIPELINE_ID" ]; then
   echo "Source pipeline not defined"
   exit 1
@@ -23,6 +28,10 @@ if [ -z "$TARGET_PIPELINE_ID" ]; then
   # Retrieve source pipeline information to mint name/label/type
   curl -H "Authorization: $BEARER_TOKEN" -H "Content-Type: application/json"  -o ${SOURCE_PIPELINE_ID}.json "$OTC_API_SERVICE_INSTANCES_URL/$SOURCE_PIPELINE_ID"
   TARGET_PIPELINE_NAME="$(cat $SOURCE_PIPELINE_ID.json | jq -r '.parameters.name')-copy"
+
+  # Replace spaces with underscores
+  TARGET_PIPELINE_NAME="${TARGET_PIPELINE_NAME// /_}"
+
   if [ -z "$TOOLCHAIN_ID" ]; then
     echo "Target toolchain not defined"
     exit 1
@@ -32,13 +41,11 @@ if [ -z "$TARGET_PIPELINE_ID" ]; then
     -X POST -o new_pipeline.json \
     --data-raw '{"service_id":"pipeline","container":{"guid":'$(ibmcloud target --output JSON | jq '.resource_group.guid')',"type":"resource_group_id"},"parameters":{"name": "'$TARGET_PIPELINE_NAME'"}}' "$OTC_API_SERVICE_INSTANCES_URL"
   TARGET_PIPELINE_ID=$(cat new_pipeline.json | jq -r '.instance_id')
-
   # Bind the new pipeline service instance to the toolchain
   curl -H "Authorization: $BEARER_TOKEN" -H "Content-Type: application/json" -X PUT --data-raw '' "$OTC_API_SERVICE_INSTANCES_URL/$TARGET_PIPELINE_ID/toolchains/$TOOLCHAIN_ID"
 
   TARGET_PIPELINE_CREATED=true
 fi
-
 curl -H "Authorization: $BEARER_TOKEN" -H "Accept: application/x-yaml" -o "${SOURCE_PIPELINE_ID}.yaml" "$PIPELINE_API_URL/pipelines/$SOURCE_PIPELINE_ID"
 
 echo "====================================================================================="
@@ -57,7 +64,7 @@ jq 'del(. | .hooks)' $SOURCE_PIPELINE_ID.json | jq 'del(.stages[] | .worker)' > 
 
 # Add the token url
 jq -r '.stages[] | select(.inputs and .inputs[0].type=="git") | .inputs[0].url' $SOURCE_PIPELINE_ID.json |\
-while IFS=$'\n\r' read -r input_gitrepo 
+while IFS=$'\n\r' read -r input_gitrepo
 do
   token_url=$(cat ${SOURCE_PIPELINE_ID}_inputsources.json | jq -r --arg git_repo "$input_gitrepo" '.[] | select( .repo_url==$git_repo ) | .token_url')
   echo "$input_gitrepo => $token_url"
@@ -66,7 +73,7 @@ do
   cp -f $TARGET_PIPELINE_ID.json tmp-$TARGET_PIPELINE_ID.json
 
   jq -r --arg input_gitrepo "$input_gitrepo" --arg token_url "$token_url" '.stages[] | if ( .inputs[0].type=="git" and .inputs[0].url==$input_gitrepo) then  .inputs[0]=(.inputs[0] + { "token": $token_url}) else . end' tmp-$TARGET_PIPELINE_ID.json | jq -s '{"stages": .}' > ${TARGET_PIPELINE_ID}.json
-  
+
 done
 
 # Add the pipeline properties in the target
@@ -79,7 +86,7 @@ yq r $TARGET_PIPELINE_ID.json > $TARGET_PIPELINE_ID.yaml
 echo '{}' | jq --rawfile yaml $TARGET_PIPELINE_ID.yaml '{"config": {"format": "yaml","content": $yaml}}' > ${TARGET_PIPELINE_ID}_configuration.json
 
 # HTTP PUT to target pipeline
-curl -is -H "Authorization: $BEARER_TOKEN" -H "Content-Type: application/json" -X PUT -d @${TARGET_PIPELINE_ID}_configuration.json $PIPELINE_API_URL/pipelines/$TARGET_PIPELINE_ID/configuration 
+curl -is -H "Authorization: $BEARER_TOKEN" -H "Content-Type: application/json" -X PUT -d @${TARGET_PIPELINE_ID}_configuration.json $PIPELINE_API_URL/pipelines/$TARGET_PIPELINE_ID/configuration
 
 # Check the configuration if it has been applied correctly
 curl -H "Authorization: $BEARER_TOKEN" -H "Accept: application/json" $PIPELINE_API_URL/pipelines/$TARGET_PIPELINE_ID/configuration
