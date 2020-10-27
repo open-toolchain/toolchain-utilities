@@ -9,11 +9,11 @@ Create Docker action container using IBM Cloud Functions/OpenWhisk to start a De
 
    Reminder: IBM Cloud Function can only use image from public registries - https://cloud.ibm.com/docs/openwhisk?topic=cloud-functions-prep#prep_docker
    ```
-   docker build -t jauninb/pipeline-run-docker:1.0.4 -t jauninb/pipeline-run-docker:latest .
-   docker push jauninb/pipeline-run-docker:1.0.4
-   docker push jauninb/pipeline-run-docker:latest
+   docker build -t cdjumpstart/pipeline-run-docker:1.0.0 -t cdjumpstart/pipeline-run-docker:latest .
+   docker push cdjumpstart/pipeline-run-docker:1.0.0
+   docker push cdjumpstart/pipeline-run-docker:latest
    ```
-   Note: you can reuse the image provided at https://hub.docker.com/repository/docker/jauninb/pipeline-run-docker
+   Note: you can reuse the image provided at https://hub.docker.com/repository/docker/cdjumpstart/pipeline-run-docker
 
 2) Create the cloud function namespace and set the CLI context to it
    ```
@@ -23,7 +23,7 @@ Create Docker action container using IBM Cloud Functions/OpenWhisk to start a De
 
 3) Create IBM Cloud docker action
    ```
-   ibmcloud fn action create pipeline-run --docker jauninb/pipeline-run-docker:1.0.4
+   ibmcloud fn action create pipeline-run --docker cdjumpstart/pipeline-run-docker:1.0.0
    ```
 
 4) Configure the action with the default toolchain context and pipeline to execute as function arguments.
