@@ -7,7 +7,7 @@ Create Docker action container using IBM Cloud Functions/OpenWhisk to start a De
 
 1) Build and push the docker image containing the `pipeline-run.sh` script as `action/exec`
 
-   Reminder: IBM Cloud Function can only use image from public registries - https://cloud.ibm.com/docs/openwhisk?topic=cloud-functions-prep#prep_docker
+   Reminder: IBM Cloud Function can only use image from public registries - https://cloud.ibm.com/docs/openwhisk?topic=openwhisk-runtimes#openwhisk_ref_docker
    ```
    docker build -t cdjumpstart/pipeline-run-docker:1.0.0 -t cdjumpstart/pipeline-run-docker:latest .
    docker push cdjumpstart/pipeline-run-docker:1.0.0
@@ -47,7 +47,7 @@ Create Docker action container using IBM Cloud Functions/OpenWhisk to start a De
    ```
 5) Configure the authentication
 
-   As described in https://cloud.ibm.com/docs/openwhisk?topic=cloud-functions-namespaces#service-id-set-ui, giving Resource group and Toolchain access to IBM Cloud function service ID corresponding to the used namespace for IBM Cloud function provide a mechanism to set the apikey (`__OW_IAM_NAMESPACE_API_KEY`) used for `ibmcloud login` in the `pipeline-run.sh` script.
+   As described in https://cloud.ibm.com/docs/openwhisk?topic=openwhisk-namespaces#targeting-namespaces, giving Resource group and Toolchain access to IBM Cloud function service ID corresponding to the used namespace for IBM Cloud function provide a mechanism to set the apikey (`__OW_IAM_NAMESPACE_API_KEY`) used for `ibmcloud login` in the `pipeline-run.sh` script.
 
    Use the IAM UI to add access to the resource group(s) and the toolchain(s) that will be launched by the IBM Cloud Function action.
    
@@ -67,7 +67,7 @@ Create Docker action container using IBM Cloud Functions/OpenWhisk to start a De
    ```
 ## Configure IBM Cloud Function trigger
 With the pipeline-run function defined, you can now define a time trigger to start it.
-See https://cloud.ibm.com/docs/openwhisk?topic=cloud-functions-pkg_alarms
+See https://cloud.ibm.com/docs/openwhisk?topic=openwhisk-triggers
 
 In the remaining section, we will define a trigger that will start a run of the configured pipeline every 2 minutes
 1) Define the time trigger
